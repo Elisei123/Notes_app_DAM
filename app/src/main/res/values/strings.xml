@@ -7,9 +7,9 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
+    <string name="add_note">Adauga notita.</string>
+    <string name="see_notes">Vezi notitele.</string>
+    <string name="search_note">Cauta in notite.</string>
 
     <string name="home_second">Home Second</string>
 </resources>
