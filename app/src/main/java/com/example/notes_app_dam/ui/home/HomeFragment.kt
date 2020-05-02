@@ -28,4 +28,10 @@ class HomeFragment : Fragment() {
         })
         return root
     }
+
+
+//    fun fa_mancare() {
+//        // REQUEST google.ro - 5s
+//        homeViewModel.fa_mancare();
+//    }
 }
