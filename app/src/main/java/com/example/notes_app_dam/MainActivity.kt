@@ -4,11 +4,12 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.marginLeft
+import androidx.core.view.marginRight
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -23,8 +24,8 @@ import com.example.notes_app_dam.NoteModel
 import com.example.notes_app_dam.NotesDBHelper
 
 @RequiresApi(Build.VERSION_CODES.O)
-class MainActivity : AppCompatActivity() {
 
+class MainActivity : AppCompatActivity() {
 
     lateinit var notesDBHelper: NotesDBHelper
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -53,12 +54,11 @@ class MainActivity : AppCompatActivity() {
                 R.id.add_note, R.id.see_notes, R.id.search_note), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        // showAllNotes(View) // De adaugat ca sa porneasca cand vad galeria cu notes..
     }
 
     fun addNote(v:View){
-        // Se suprapune cand se da inca o data run. pt ca o i a de la 0
-        var noteid = id_note_entry.toString()
-
         // pick date and hour
         val current = LocalDateTime.now()
         val formatter_date = DateTimeFormatter.ofPattern("yyyy-MM-dd")
@@ -77,13 +77,29 @@ class MainActivity : AppCompatActivity() {
         println(result)
         this.edit_text_message.setText("")
         Toast.makeText(this, "Notita a fost salvata.", Toast.LENGTH_LONG).show()
-        id_note_entry++;
     }
 
-//    fun showAllNotes(v:View){
-//        var notes = notesDBHelper.readAllNotes()
-//        notes.forEach { println(notes) }
-//    }
+    fun showAllNotes(){
+        var notes = notesDBHelper.readAllNotes()
+
+        var ll_entries: LinearLayout = findViewById(R.id.ll_entries)
+        notes.forEach {
+
+//            val button = Button(this)
+//            button.apply{
+//                text = "X"
+//                layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+//                    TableRow.LayoutParams.WRAP_CONTENT)
+//            }
+
+            var tv_user = TextView(this)
+            tv_user.textSize = 15F
+            tv_user.text = it.note_message.toString() + "\n(" + it.note_date.toString() + " - " + it.note_hour.toString() + ").\n\n\n"
+            tv_user.setPadding(50, 10, 20, 10)
+            ll_entries.addView(tv_user)
+            //ll_entries.addView(button)
+        }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.

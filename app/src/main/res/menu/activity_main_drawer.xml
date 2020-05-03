@@ -11,7 +11,7 @@
         <item
             android:id="@+id/see_notes"
             android:icon="@drawable/see_notes"
-            android:title="@string/see_notes" />
+            android:title="@string/see_notes"/>
         <item
             android:id="@+id/search_note"
             android:icon="@drawable/search_note"
