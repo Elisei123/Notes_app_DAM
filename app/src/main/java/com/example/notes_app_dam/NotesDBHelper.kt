@@ -77,7 +77,7 @@ class NotesDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
                 note_hour = cursor.getString(cursor.getColumnIndex(DBContract.NoteEntry.COLUMN_HOUR))
                 note_message = cursor.getString(cursor.getColumnIndex(DBContract.NoteEntry.COLUMN_MESSAGE))
 
-                notes.add(NoteModel(note_date, note_hour, note_message))
+                notes.add(NoteModel(noteid,note_date, note_hour, note_message))
                 cursor.moveToNext()
             }
         }
@@ -106,11 +106,20 @@ class NotesDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
                 note_hour = cursor.getString(cursor.getColumnIndex(DBContract.NoteEntry.COLUMN_HOUR))
                 note_message = cursor.getString(cursor.getColumnIndex(DBContract.NoteEntry.COLUMN_MESSAGE))
 
-                notes.add(NoteModel(note_date, note_hour, note_message))
+                notes.add(NoteModel(noteid, note_date, note_hour, note_message))
                 cursor.moveToNext()
             }
         }
         return notes
+    }
+
+    @Throws(SQLiteConstraintException::class)
+    fun deleteUser(userid: Int) {
+        // Gets the data repository in write mode
+        val db = writableDatabase
+
+        // Issue SQL statement.
+        db.delete(DBContract.NoteEntry.TABLE_NAME, DBContract.NoteEntry.COLUMN_NOTE_ID + "=" + userid, null)
     }
 
     companion object {

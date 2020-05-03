@@ -2,6 +2,7 @@ package com.example.notes_app_dam
 
 import android.os.Build
 import android.os.Bundle
+import android.view.Gravity
 import android.view.Menu
 import android.view.View
 import android.widget.*
@@ -73,31 +74,49 @@ class MainActivity : AppCompatActivity() {
         var note_message1: EditText = findViewById(R.id.edit_text_message)
         var note_message = note_message1.text.toString()
 
-        var result = notesDBHelper.insertNote(NoteModel(note_date = note_date,note_hour = note_hour, note_message=note_message))
+
+        // Am pus noteid = 0 pt ca este cu AUTOINCREMENT, si vreau sa folosesc id-ul.
+        var result = notesDBHelper.insertNote(NoteModel(noteid = 0, note_date = note_date,note_hour = note_hour, note_message=note_message))
         println(result)
-        this.edit_text_message.setText("")
+        this.edit_text_message.setText(" ")
         Toast.makeText(this, "Notita a fost salvata.", Toast.LENGTH_LONG).show()
     }
+    // delete note fun when you clicked X button.
+    fun delete_note(button: Button){
+        println("Vrei sa stergi notita cu numarul: " + button.id)
+        notesDBHelper.deleteUser(button.id)
+    }
+    //TODO: Trebuie sa fac cumva sa ii dau refresh la pagina, pt ca nu se salveaza.
 
+
+
+    // show All notes in "Vezi notitele."
     fun showAllNotes(){
         var notes = notesDBHelper.readAllNotes()
 
         var ll_entries: LinearLayout = findViewById(R.id.ll_entries)
         notes.forEach {
-
-//            val button = Button(this)
-//            button.apply{
-//                text = "X"
-//                layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
-//                    TableRow.LayoutParams.WRAP_CONTENT)
-//            }
+            println(it.note_hour)
+            val button = Button(this)
+            button.apply{
+                id=it.noteid
+                text = "X"
+                layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                    TableRow.LayoutParams.WRAP_CONTENT)
+            }
 
             var tv_user = TextView(this)
             tv_user.textSize = 15F
-            tv_user.text = it.note_message.toString() + "\n(" + it.note_date.toString() + " - " + it.note_hour.toString() + ").\n\n\n"
+            tv_user.text = "\n\n\n" + it.note_message.toString() + "\n(" + it.note_date.toString() + " - " + it.note_hour.toString() + ")."
             tv_user.setPadding(50, 10, 20, 10)
             ll_entries.addView(tv_user)
-            //ll_entries.addView(button)
+            ll_entries.addView(button)
+            button.setOnClickListener {
+                delete_note(button)
+                Toast.makeText(this, "Notita a fost stearsa.", Toast.LENGTH_LONG).show()
+                finish()
+                startActivity(getIntent())
+            }
         }
     }
 
