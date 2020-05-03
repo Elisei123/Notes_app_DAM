@@ -32,7 +32,7 @@ class NotesDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
 
         // Create a new map of values, where column names are the keys
         val values = ContentValues()
-        values.put(DBContract.NoteEntry.COLUMN_NOTE_ID, note.noteid)
+        //values.put(DBContract.NoteEntry.COLUMN_NOTE_ID, note.noteid)
         values.put(DBContract.NoteEntry.COLUMN_DATE, note.note_date)
         values.put(DBContract.NoteEntry.COLUMN_HOUR, note.note_hour)
         values.put(DBContract.NoteEntry.COLUMN_MESSAGE, note.note_message)
@@ -44,7 +44,7 @@ class NotesDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
     }
 
     @Throws(SQLiteConstraintException::class)
-    fun deleteNote(noteid: String): Boolean {
+    /*fun deleteNote(noteid: Int): Boolean {
         // Gets the data repository in write mode
         val db = writableDatabase
         // Define 'where' part of query.
@@ -54,9 +54,9 @@ class NotesDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
         // Issue SQL statement.
         db.delete(DBContract.NoteEntry.TABLE_NAME, selection, selectionArgs)
         return true
-    }
+    }*/
 
-    fun readNote(noteid: String): ArrayList<NoteModel> {
+    fun readNote(noteid: Int): ArrayList<NoteModel> {
         val notes = ArrayList<NoteModel>()
         val db = writableDatabase
         var cursor: Cursor? = null
@@ -77,7 +77,7 @@ class NotesDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
                 note_hour = cursor.getString(cursor.getColumnIndex(DBContract.NoteEntry.COLUMN_HOUR))
                 note_message = cursor.getString(cursor.getColumnIndex(DBContract.NoteEntry.COLUMN_MESSAGE))
 
-                notes.add(NoteModel(noteid, note_date, note_hour, note_message))
+                notes.add(NoteModel(note_date, note_hour, note_message))
                 cursor.moveToNext()
             }
         }
@@ -95,18 +95,18 @@ class NotesDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
             return ArrayList()
         }
 
-        var noteid: String
+        var noteid: Int
         var note_date: String
         var note_hour: String
         var note_message: String
         if (cursor!!.moveToFirst()) {
             while (cursor.isAfterLast == false) {
-                noteid = cursor.getString(cursor.getColumnIndex(DBContract.NoteEntry.COLUMN_NOTE_ID))
+                noteid = cursor.getInt(cursor.getColumnIndex(DBContract.NoteEntry.COLUMN_NOTE_ID))
                 note_date = cursor.getString(cursor.getColumnIndex(DBContract.NoteEntry.COLUMN_DATE))
                 note_hour = cursor.getString(cursor.getColumnIndex(DBContract.NoteEntry.COLUMN_HOUR))
                 note_message = cursor.getString(cursor.getColumnIndex(DBContract.NoteEntry.COLUMN_MESSAGE))
 
-                notes.add(NoteModel(noteid, note_date, note_hour, note_message))
+                notes.add(NoteModel(note_date, note_hour, note_message))
                 cursor.moveToNext()
             }
         }
@@ -120,7 +120,7 @@ class NotesDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
 
         private val SQL_CREATE_ENTRIES =
             "CREATE TABLE " + DBContract.NoteEntry.TABLE_NAME + " (" +
-                    DBContract.NoteEntry.COLUMN_NOTE_ID + " TEXT PRIMARY KEY," +
+                    DBContract.NoteEntry.COLUMN_NOTE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     DBContract.NoteEntry.COLUMN_DATE + " TEXT," +
                     DBContract.NoteEntry.COLUMN_HOUR + " TEXT," +
                     DBContract.NoteEntry.COLUMN_MESSAGE + " TEXT)"

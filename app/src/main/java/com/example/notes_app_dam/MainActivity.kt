@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
         var note_message1: EditText = findViewById(R.id.edit_text_message)
         var note_message = note_message1.text.toString()
 
-        var result = notesDBHelper.insertNote(NoteModel(noteid = noteid,note_date = note_date,note_hour = note_hour, note_message=note_message))
+        var result = notesDBHelper.insertNote(NoteModel(note_date = note_date,note_hour = note_hour, note_message=note_message))
         println(result)
         this.edit_text_message.setText("")
         Toast.makeText(this, "Notita a fost salvata.", Toast.LENGTH_LONG).show()
