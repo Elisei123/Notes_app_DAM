@@ -11,10 +11,17 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import android.view.View
+import android.widget.TextView
+import com.example.notes_app_dam.NoteModel
+import com.example.notes_app_dam.NotesDBHelper
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    lateinit var notesDBHelper: NotesDBHelper
+    var id_note_entry: String = "0"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,12 +29,19 @@ class MainActivity : AppCompatActivity() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        // P.S: Il poti folosi la add_note.
+        // P.S: Il poti folosi la add_note. -> acea iconica din dreapta jos cu mesaj
 //        val fab: FloatingActionButton = findViewById(R.id.fab)
 //        fab.setOnClickListener { view ->
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null).show()
-//        }
+
+        fun addNote(v:View){
+            var noteid = this.id_note_entry.toString()
+            id_note_entry++;
+        }
+
+
+
 
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
