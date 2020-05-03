@@ -26,7 +26,6 @@ class NotesDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
     }
 
     @Throws(SQLiteConstraintException::class)
-
     fun insertNote(note: NoteModel): Boolean{
         // Gets the data repository in write mode
         val db = writableDatabase

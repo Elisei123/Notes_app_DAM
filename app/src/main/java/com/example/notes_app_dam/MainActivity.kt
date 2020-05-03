@@ -1,27 +1,35 @@
 package com.example.notes_app_dam
 
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
-import com.google.android.material.navigation.NavigationView
+import android.view.View
+import android.widget.EditText
+import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import android.view.View
-import android.widget.TextView
+import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.main.add_note.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import com.example.notes_app_dam.NoteModel
 import com.example.notes_app_dam.NotesDBHelper
-import kotlinx.android.synthetic.main.activity_main.*
 
+@RequiresApi(Build.VERSION_CODES.O)
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
+
     lateinit var notesDBHelper: NotesDBHelper
-    var id_note_entry: String = "0"
+    private lateinit var appBarConfiguration: AppBarConfiguration
+    var id_note_entry: Int = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,15 +42,7 @@ class MainActivity : AppCompatActivity() {
 //        fab.setOnClickListener { view ->
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                    .setAction("Action", null).show()
-
-        fun addNote(v:View){
-            var noteid = this.id_note_entry.toString()
-            id_note_entry++;
-        }
-
-
-
-
+        notesDBHelper = NotesDBHelper(this)
 
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         val navView: NavigationView = findViewById(R.id.nav_view)
@@ -54,6 +54,36 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
+
+    fun addNote(v:View){
+        // Se suprapune cand se da inca o data run. pt ca o i a de la 0
+        var noteid = id_note_entry.toString()
+
+        // pick date and hour
+        val current = LocalDateTime.now()
+        val formatter_date = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val formatted_date = current.format(formatter_date)
+
+        val formatter_hour = DateTimeFormatter.ofPattern("HH:mm:ss")
+        val formatted_hour = current.format(formatter_hour)
+
+        var note_date = formatted_date.toString()
+        var note_hour = formatted_hour.toString()
+       // Pick message from .xml
+        var note_message1: EditText = findViewById(R.id.edit_text_message)
+        var note_message = note_message1.text.toString()
+
+        var result = notesDBHelper.insertNote(NoteModel(noteid = noteid,note_date = note_date,note_hour = note_hour, note_message=note_message))
+        println(result)
+        this.edit_text_message.setText("")
+        Toast.makeText(this, "Notita a fost salvata.", Toast.LENGTH_LONG).show()
+        id_note_entry++;
+    }
+
+//    fun showAllNotes(v:View){
+//        var notes = notesDBHelper.readAllNotes()
+//        notes.forEach { println(notes) }
+//    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.

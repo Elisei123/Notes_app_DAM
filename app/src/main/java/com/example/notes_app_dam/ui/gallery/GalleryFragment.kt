@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ListView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -22,9 +23,10 @@ class GalleryFragment : Fragment() {
         galleryViewModel =
                 ViewModelProviders.of(this).get(GalleryViewModel::class.java)
         val root = inflater.inflate(R.layout.see_notes, container, false)
-        val textView: TextView = root.findViewById(R.id.text_gallery)
+        //val textView: TextView = root.findViewById(R.id.text_gallery)
+        var listView: ListView = root.findViewById(R.id.listView)
         galleryViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
+            //textView.text = it
         })
         return root
     }
