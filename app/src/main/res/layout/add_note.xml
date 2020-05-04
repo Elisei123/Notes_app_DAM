@@ -7,6 +7,7 @@
     tools:context=".MainActivity">
 
     <ScrollView
+        android:id="@+id/write_task_bar"
         android:layout_width="match_parent"
         android:padding="2dp"
         android:paddingLeft="2dp"
@@ -24,7 +25,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:textSize="15sp" />
+            android:textSize="15sp"
+            android:autofillHints="Scrie o notita!"
+            android:inputType="text"
+            tools:ignore="LabelFor" />
 
     </ScrollView>
 
@@ -41,7 +45,7 @@
             android:layout_height="wrap_content"
             android:text="@string/save_button"
             tools:ignore="ButtonStyle"
-            android:onClick="addNote"/>
+            android:onClick="addNote" />
 
     </LinearLayout>
 

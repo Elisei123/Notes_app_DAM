@@ -23,6 +23,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import com.example.notes_app_dam.NoteModel
 import com.example.notes_app_dam.NotesDBHelper
+import kotlinx.android.synthetic.main.see_notes.*
 
 @RequiresApi(Build.VERSION_CODES.O)
 
@@ -56,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        // showAllNotes(View) // De adaugat ca sa porneasca cand vad galeria cu notes..
+
     }
 
     fun addNote(v:View){
@@ -77,16 +78,18 @@ class MainActivity : AppCompatActivity() {
 
         // Am pus noteid = 0 pt ca este cu AUTOINCREMENT, si vreau sa folosesc id-ul.
         var result = notesDBHelper.insertNote(NoteModel(noteid = 0, note_date = note_date,note_hour = note_hour, note_message=note_message))
-        println(result)
-        this.edit_text_message.setText(" ")
-        Toast.makeText(this, "Notita a fost salvata.", Toast.LENGTH_LONG).show()
+
+        var text_edit_text : EditText = findViewById(R.id.edit_text_message)
+        text_edit_text.setText(" ")
+//        this.edit_text_message.setText(" ")
+
+        Toast.makeText(this, "Notita a fost salvata.", Toast.LENGTH_SHORT).show()
     }
     // delete note fun when you clicked X button.
     fun delete_note(button: Button){
-        println("Vrei sa stergi notita cu numarul: " + button.id)
+        //println("Vrei sa stergi notita cu numarul: " + button.id)
         notesDBHelper.deleteUser(button.id)
     }
-    //TODO: Trebuie sa fac cumva sa ii dau refresh la pagina, pt ca nu se salveaza.
 
 
 
@@ -113,9 +116,12 @@ class MainActivity : AppCompatActivity() {
             ll_entries.addView(button)
             button.setOnClickListener {
                 delete_note(button)
-                Toast.makeText(this, "Notita a fost stearsa.", Toast.LENGTH_LONG).show()
-                finish()
-                startActivity(getIntent())
+                Toast.makeText(this, "Notita a fost stearsa.", Toast.LENGTH_SHORT).show()
+                //TODO: Cand sterg o notita, nu se actualizeaza pagina.
+                //TODO: Trebuie sa fac cumva sa ii dau refresh la pagina, pt ca nu se salveaza.
+
+                ll_entries.removeAllViews()
+                showAllNotes()
             }
         }
     }

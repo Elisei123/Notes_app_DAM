@@ -89,7 +89,8 @@ class NotesDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
         val db = writableDatabase
         var cursor: Cursor? = null
         try {
-            cursor = db.rawQuery("select * from " + DBContract.NoteEntry.TABLE_NAME, null)
+            cursor = db.rawQuery("select * from " + DBContract.NoteEntry.TABLE_NAME + " ORDER BY "+
+                    DBContract.NoteEntry.COLUMN_NOTE_ID + " DESC ", null)
         } catch (e: SQLiteException) {
             db.execSQL(SQL_CREATE_ENTRIES)
             return ArrayList()
