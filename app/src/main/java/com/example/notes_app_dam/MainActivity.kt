@@ -24,6 +24,8 @@ import java.time.format.DateTimeFormatter
 import com.example.notes_app_dam.NoteModel
 import com.example.notes_app_dam.NotesDBHelper
 import kotlinx.android.synthetic.main.see_notes.*
+import android.widget.AdapterView
+import android.widget.Spinner
 
 @RequiresApi(Build.VERSION_CODES.O)
 
@@ -31,8 +33,6 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var notesDBHelper: NotesDBHelper
     private lateinit var appBarConfiguration: AppBarConfiguration
-    var id_note_entry: Int = 0
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,10 +63,10 @@ class MainActivity : AppCompatActivity() {
     fun addNote(v:View){
         // pick date and hour
         val current = LocalDateTime.now()
-        val formatter_date = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val formatter_date = DateTimeFormatter.ofPattern("dd-MM-yyyy")
         val formatted_date = current.format(formatter_date)
 
-        val formatter_hour = DateTimeFormatter.ofPattern("HH:mm:ss")
+        val formatter_hour = DateTimeFormatter.ofPattern("HH:mm") // hours and minuts.
         val formatted_hour = current.format(formatter_hour)
 
         var note_date = formatted_date.toString()
@@ -81,8 +81,7 @@ class MainActivity : AppCompatActivity() {
 
         var text_edit_text : EditText = findViewById(R.id.edit_text_message)
         text_edit_text.setText(" ")
-//        this.edit_text_message.setText(" ")
-
+        text_edit_text.hint = "Scrie notita!"
         Toast.makeText(this, "Notita a fost salvata.", Toast.LENGTH_SHORT).show()
     }
     // delete note fun when you clicked X button.
@@ -90,8 +89,6 @@ class MainActivity : AppCompatActivity() {
         //println("Vrei sa stergi notita cu numarul: " + button.id)
         notesDBHelper.deleteUser(button.id)
     }
-
-
 
     // show All notes in "Vezi notitele."
     fun showAllNotes(){
@@ -117,11 +114,41 @@ class MainActivity : AppCompatActivity() {
             button.setOnClickListener {
                 delete_note(button)
                 Toast.makeText(this, "Notita a fost stearsa.", Toast.LENGTH_SHORT).show()
-                //TODO: Cand sterg o notita, nu se actualizeaza pagina.
-                //TODO: Trebuie sa fac cumva sa ii dau refresh la pagina, pt ca nu se salveaza.
-
                 ll_entries.removeAllViews()
                 showAllNotes()
+            }
+        }
+    }
+
+    fun search_note(){
+
+        //TODO: De terminat search_bar-ul de aici.
+        var edit_text_search_note: EditText = findViewById(R.id.edit_text_search_note)
+        var spinner: Spinner = findViewById(R.id.spinner_option_search)
+
+        val options = arrayOf("Cuvinte", "Data", "Ora")
+        val adapter= ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, options)
+        spinner.adapter = adapter
+
+
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                edit_text_search_note.hint = "Selecteaza tipul."
+            }
+
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                if (options.get(position) == "Cuvinte"){
+                    edit_text_search_note.hint = "Scrie cuvinte cheie."
+                }else if(options.get(position) == "Data"){
+                    edit_text_search_note.hint = "21.04.2020"
+                }else if(options.get(position) == "Ora"){
+                    edit_text_search_note.hint = "23:00"
+                }
             }
         }
     }

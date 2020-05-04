@@ -9,6 +9,7 @@
     <ScrollView
         android:id="@+id/write_task_bar"
         android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:padding="2dp"
         android:paddingLeft="2dp"
         android:paddingTop="2dp"
@@ -16,8 +17,7 @@
         android:paddingBottom="2dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp"
-        android:layout_height="0dp">
+        tools:layout_editor_absoluteX="0dp">
 
 
         <EditText
@@ -25,10 +25,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:textSize="15sp"
             android:autofillHints="Scrie o notita!"
-            android:inputType="text"
-            tools:ignore="LabelFor" />
+            android:hint="@string/scrie_notita"
+            android:inputType="textMultiLine"
+            android:textSize="15sp"
+            android:layout_gravity="center"
+            />
 
     </ScrollView>
 
@@ -36,16 +38,18 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:gravity="center_horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:gravity="center_horizontal">
+        tools:layout_editor_absoluteX="0dp">
 
         <Button
             android:id="@+id/save_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="addNote"
             android:text="@string/save_button"
-            tools:ignore="ButtonStyle"
-            android:onClick="addNote" />
+            tools:ignore="ButtonStyle" />
 
     </LinearLayout>
 

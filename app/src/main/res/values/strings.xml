@@ -13,4 +13,7 @@
 
     <string name="home_second">Home Second</string>
     <string name="save_button">Salveaza</string>
+    <string name="defauld">Defauld</string>
+    <string name="scrie_cuvinte_data_sau_ora">Scrie aici ce doresti.</string>
+    <string name="scrie_notita">Scrie notita!</string>
 </resources>
