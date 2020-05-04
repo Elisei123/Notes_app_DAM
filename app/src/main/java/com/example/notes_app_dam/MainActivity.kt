@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity() {
 
             var tv_user = TextView(this)
             tv_user.textSize = 15F
-            tv_user.text = "\n\n\n" + it.note_message.toString() + "\n(" + it.note_date.toString() + " - " + it.note_hour.toString() + ")."
+            tv_user.text = "\n\n" + it.note_message.toString() + "\n(" + it.note_date.toString() + " - " + it.note_hour.toString() + ")."
             tv_user.setPadding(50, 10, 20, 10)
             ll_entries.addView(tv_user)
             ll_entries.addView(button)

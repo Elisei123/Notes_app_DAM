@@ -238,3 +238,5 @@ class NotesDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
     }
 
 }
+
+//  Copyright www.elisei.cf
