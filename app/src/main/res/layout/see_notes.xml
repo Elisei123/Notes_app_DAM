@@ -18,7 +18,8 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="UselessParent">
 
             <LinearLayout
                 android:id="@+id/ll_entries"
@@ -26,6 +27,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 tools:ignore="MissingConstraints">
+
+                <LinearLayout
+                    android:id="@+id/linear_with_buttons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
 
 
             </LinearLayout>

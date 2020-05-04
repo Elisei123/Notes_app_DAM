@@ -92,15 +92,29 @@ class MainActivity : AppCompatActivity() {
 
     // show All notes in "Vezi notitele."
     fun showAllNotes(){
+        //TODO: Ca sa fac modificarile, pot sa creez alta pagina de .XML, sa creez un edit text, si
+        //TODO: si sa pun in acle EditText codul copiat.
+
         var notes = notesDBHelper.readAllNotes()
 
         var ll_entries: LinearLayout = findViewById(R.id.ll_entries)
         notes.forEach {
-            println(it.note_hour)
+
+
+            // create delete button.
             val button = Button(this)
             button.apply{
                 id=it.noteid
-                text = "X"
+                text = "Sterge task."
+                layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                    TableRow.LayoutParams.WRAP_CONTENT)
+            }
+
+            // create edit button.
+            val button_for_edit_text = Button(this)
+            button_for_edit_text.apply {
+                id=it.noteid
+                text = "Modifica task."
                 layoutParams = TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
                     TableRow.LayoutParams.WRAP_CONTENT)
             }
@@ -111,6 +125,7 @@ class MainActivity : AppCompatActivity() {
             tv_user.setPadding(50, 10, 20, 10)
             ll_entries.addView(tv_user)
             ll_entries.addView(button)
+            ll_entries.addView(button_for_edit_text)
             button.setOnClickListener {
                 delete_note(button)
                 Toast.makeText(this, "Notita a fost stearsa.", Toast.LENGTH_SHORT).show()
@@ -120,6 +135,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // repetition (Search menu).
     fun show_on_activity(notes: ArrayList<NoteModel>){
         var ll_entries_search: LinearLayout = findViewById(R.id.ll_entries_search)
         ll_entries_search.removeAllViews()
@@ -132,9 +148,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    // Search menu.
     fun search_note(){
-
-        //TODO: De terminat search_bar-ul de aici.
         var edit_text_search_note: EditText = findViewById(R.id.edit_text_search_note)
         var spinner: Spinner = findViewById(R.id.spinner_option_search)
         var search_button: Button = findViewById(R.id.search_button)
