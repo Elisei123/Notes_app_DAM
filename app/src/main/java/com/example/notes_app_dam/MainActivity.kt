@@ -120,6 +120,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun show_on_activity(notes: ArrayList<NoteModel>){
+        var ll_entries_search: LinearLayout = findViewById(R.id.ll_entries_search)
+        ll_entries_search.removeAllViews()
+        notes.forEach {
+            var tv_note = TextView(this@MainActivity)
+            tv_note.textSize = 15F
+            tv_note.text = "\n" + it.note_message.toString() + "\n(" + it.note_date.toString() + " - " + it.note_hour.toString() + ")."
+            tv_note.setPadding(50, 10, 20, 10)
+            ll_entries_search.addView(tv_note)
+        }
+    }
+
     fun search_note(){
 
         //TODO: De terminat search_bar-ul de aici.
@@ -133,6 +145,7 @@ class MainActivity : AppCompatActivity() {
 
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 edit_text_search_note.hint = "Selecteaza tipul."
             }
@@ -145,24 +158,26 @@ class MainActivity : AppCompatActivity() {
             ) {
                 if (options.get(position) == "Cuvinte"){
                     edit_text_search_note.hint = "Scrie cuvinte cheie."
+
+                    search_button.setOnClickListener {
+                        var notes = notesDBHelper.readNotes_words(edit_text_search_note.text.toString())
+                        show_on_activity(notes)
+                    }
                 }else if(options.get(position) == "Data"){
                     edit_text_search_note.hint = "21.04.2020"
 
                     search_button.setOnClickListener {
                         var notes = notesDBHelper.readNotes_date(edit_text_search_note.text.toString())
-
-                        var ll_entries_search: LinearLayout = findViewById(R.id.ll_entries_search)
-                        notes.forEach {
-                            var tv_note = TextView(this@MainActivity)
-                            tv_note.textSize = 15F
-                            tv_note.text = "\n\n\n" + it.note_message.toString() + "\n(" + it.note_date.toString() + " - " + it.note_hour.toString() + ")."
-                            tv_note.setPadding(50, 10, 20, 10)
-                            ll_entries_search.addView(tv_note)
-                        }
+                        show_on_activity(notes)
                     }
-
                 }else if(options.get(position) == "Ora"){
                     edit_text_search_note.hint = "23:00"
+
+                    search_button.setOnClickListener {
+                        var notes =
+                            notesDBHelper.readNotes_hour(edit_text_search_note.text.toString())
+                        show_on_activity(notes)
+                    }
                 }
             }
         }
