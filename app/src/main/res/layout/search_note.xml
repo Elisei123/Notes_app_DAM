@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.slideshow.SlideshowFragment">
+    tools:context=".MainActivity">
 
     <LinearLayout
         android:id="@+id/linearlayout_search_bar"
         android:layout_width="379dp"
-        android:layout_height="82dp"
+        android:layout_height="0dp"
         android:layout_marginTop="24dp"
+        android:layout_marginBottom="534dp"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,7 +24,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:hint="@string/scrie_cuvinte_data_sau_ora"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine"
+            android:importantForAutofill="no" />
 
         <Spinner
             android:id="@+id/spinner_option_search"
@@ -32,4 +34,59 @@
             android:gravity="center" />
 
     </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/scroll_view_note"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="80dp"
+        app:layout_constraintBottom_toTopOf="@+id/search_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearlayout_search_bar">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="UselessParent">
+
+            <LinearLayout
+                android:id="@+id/ll_entries_search"
+                android:layout_width="414dp"
+                android:layout_height="542dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/search_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearlayout_search_bar"
+                tools:ignore="MissingConstraints" />
+        </ScrollView>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/search_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cauta"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearlayout_search_bar"
+        app:layout_constraintVertical_bias="0.952" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+
+
+
+

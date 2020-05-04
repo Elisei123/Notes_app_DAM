@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
     fun addNote(v:View){
         // pick date and hour
         val current = LocalDateTime.now()
-        val formatter_date = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+        val formatter_date = DateTimeFormatter.ofPattern("dd.MM.yyyy")
         val formatted_date = current.format(formatter_date)
 
         val formatter_hour = DateTimeFormatter.ofPattern("HH:mm") // hours and minuts.
@@ -125,6 +125,7 @@ class MainActivity : AppCompatActivity() {
         //TODO: De terminat search_bar-ul de aici.
         var edit_text_search_note: EditText = findViewById(R.id.edit_text_search_note)
         var spinner: Spinner = findViewById(R.id.spinner_option_search)
+        var search_button: Button = findViewById(R.id.search_button)
 
         val options = arrayOf("Cuvinte", "Data", "Ora")
         val adapter= ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, options)
@@ -146,11 +147,26 @@ class MainActivity : AppCompatActivity() {
                     edit_text_search_note.hint = "Scrie cuvinte cheie."
                 }else if(options.get(position) == "Data"){
                     edit_text_search_note.hint = "21.04.2020"
+
+                    search_button.setOnClickListener {
+                        var notes = notesDBHelper.readNotes_date(edit_text_search_note.text.toString())
+
+                        var ll_entries_search: LinearLayout = findViewById(R.id.ll_entries_search)
+                        notes.forEach {
+                            var tv_note = TextView(this@MainActivity)
+                            tv_note.textSize = 15F
+                            tv_note.text = "\n\n\n" + it.note_message.toString() + "\n(" + it.note_date.toString() + " - " + it.note_hour.toString() + ")."
+                            tv_note.setPadding(50, 10, 20, 10)
+                            ll_entries_search.addView(tv_note)
+                        }
+                    }
+
                 }else if(options.get(position) == "Ora"){
                     edit_text_search_note.hint = "23:00"
                 }
             }
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

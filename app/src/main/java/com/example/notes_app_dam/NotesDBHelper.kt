@@ -114,6 +114,42 @@ class NotesDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
         return notes
     }
 
+    fun readNotes_date(date1: String): ArrayList<NoteModel> {
+        //TODO: Eroare, tabela inca exista (Run).
+        val notes = ArrayList<NoteModel>()
+        val db = writableDatabase
+        var cursor: Cursor? = null
+        try {
+
+            cursor = db.rawQuery("select * from " + DBContract.NoteEntry.TABLE_NAME + " ORDER BY "+
+                    DBContract.NoteEntry.COLUMN_NOTE_ID + " DESC ", null)
+            cursor = db.rawQuery("select * from " + DBContract.NoteEntry.TABLE_NAME + " WHERE "
+                    + DBContract.NoteEntry.COLUMN_DATE + "='" + date1 + "' ORDER BY "+
+                    DBContract.NoteEntry.COLUMN_NOTE_ID + " DESC ", null)
+
+        } catch (e: SQLiteException) {
+            db.execSQL(SQL_CREATE_ENTRIES)
+            return ArrayList()
+        }
+
+        var noteid: Int
+        var note_date: String
+        var note_hour: String
+        var note_message: String
+        if (cursor!!.moveToFirst()) {
+            while (cursor.isAfterLast == false) {
+                noteid = cursor.getInt(cursor.getColumnIndex(DBContract.NoteEntry.COLUMN_NOTE_ID))
+                note_date = cursor.getString(cursor.getColumnIndex(DBContract.NoteEntry.COLUMN_DATE))
+                note_hour = cursor.getString(cursor.getColumnIndex(DBContract.NoteEntry.COLUMN_HOUR))
+                note_message = cursor.getString(cursor.getColumnIndex(DBContract.NoteEntry.COLUMN_MESSAGE))
+
+                notes.add(NoteModel(noteid, note_date, note_hour, note_message))
+                cursor.moveToNext()
+            }
+        }
+        return notes
+    }
+
     @Throws(SQLiteConstraintException::class)
     fun deleteUser(userid: Int) {
         // Gets the data repository in write mode
