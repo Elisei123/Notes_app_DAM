@@ -56,33 +56,33 @@ class NotesDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
         return true
     }*/
 
-    fun readNote(noteid: Int): ArrayList<NoteModel> {
-        val notes = ArrayList<NoteModel>()
-        val db = writableDatabase
-        var cursor: Cursor? = null
-        try {
-            cursor = db.rawQuery("select * from " + DBContract.NoteEntry.TABLE_NAME + " WHERE " + DBContract.NoteEntry.COLUMN_NOTE_ID + "='" + noteid + "'", null)
-        } catch (e: SQLiteException) {
-            // if table not yet present, create it
-            db.execSQL(SQL_CREATE_ENTRIES)
-            return ArrayList()
-        }
-
-        var note_date: String
-        var note_hour: String
-        var note_message: String
-        if (cursor!!.moveToFirst()) {
-            while (cursor.isAfterLast == false) {
-                note_date = cursor.getString(cursor.getColumnIndex(DBContract.NoteEntry.COLUMN_DATE))
-                note_hour = cursor.getString(cursor.getColumnIndex(DBContract.NoteEntry.COLUMN_HOUR))
-                note_message = cursor.getString(cursor.getColumnIndex(DBContract.NoteEntry.COLUMN_MESSAGE))
-
-                notes.add(NoteModel(noteid,note_date, note_hour, note_message))
-                cursor.moveToNext()
-            }
-        }
-        return notes
-    }
+//    fun readNote(noteid: Int): ArrayList<NoteModel> {
+//        val notes = ArrayList<NoteModel>()
+//        val db = writableDatabase
+//        var cursor: Cursor? = null
+//        try {
+//            cursor = db.rawQuery("select * from " + DBContract.NoteEntry.TABLE_NAME + " WHERE " + DBContract.NoteEntry.COLUMN_NOTE_ID + "='" + noteid + "'", null)
+//        } catch (e: SQLiteException) {
+//            // if table not yet present, create it
+//            db.execSQL(SQL_CREATE_ENTRIES)
+//            return ArrayList()
+//        }
+//
+//        var note_date: String
+//        var note_hour: String
+//        var note_message: String
+//        if (cursor!!.moveToFirst()) {
+//            while (cursor.isAfterLast == false) {
+//                note_date = cursor.getString(cursor.getColumnIndex(DBContract.NoteEntry.COLUMN_DATE))
+//                note_hour = cursor.getString(cursor.getColumnIndex(DBContract.NoteEntry.COLUMN_HOUR))
+//                note_message = cursor.getString(cursor.getColumnIndex(DBContract.NoteEntry.COLUMN_MESSAGE))
+//
+//                notes.add(NoteModel(noteid,note_date, note_hour, note_message))
+//                cursor.moveToNext()
+//            }
+//        }
+//        return notes
+//    }
 
     fun readAllNotes(): ArrayList<NoteModel> {
         val notes = ArrayList<NoteModel>()
@@ -222,6 +222,19 @@ class NotesDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
         db.delete(DBContract.NoteEntry.TABLE_NAME, DBContract.NoteEntry.COLUMN_NOTE_ID + "=" + userid, null)
     }
 
+    fun modify_text(text_update: String, id_item: Int){
+        // Gets the data repository in write mode
+        val db = writableDatabase
+        // db.rawQuery("UPDATE " + DBContract.NoteEntry.TABLE_NAME + " SET " + DBContract.NoteEntry.COLUMN_MESSAGE + "='" + text_update + "' WHERE " + DBContract.NoteEntry.COLUMN_NOTE_ID + "=" + id_item, null)
+
+        val values = ContentValues()
+        values.apply {
+            put(DBContract.NoteEntry.COLUMN_MESSAGE, text_update)
+        }
+
+        db.update(DBContract.NoteEntry.TABLE_NAME, values, DBContract.NoteEntry.COLUMN_NOTE_ID + "=" + id_item, null)
+    }
+
     companion object {
         // If you change the database schema, you must increment the database version.
         val DATABASE_VERSION = 1
@@ -239,4 +252,4 @@ class NotesDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME,
 
 }
 
-//  Copyright www.elisei.cf
+//  Copyright https://github.com/Elisei123/Notes_app_DAM

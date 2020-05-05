@@ -1,16 +1,14 @@
 package com.example.notes_app_dam
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
 import android.view.Menu
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.marginLeft
-import androidx.core.view.marginRight
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -18,14 +16,11 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.add_note.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import com.example.notes_app_dam.NoteModel
-import com.example.notes_app_dam.NotesDBHelper
-import kotlinx.android.synthetic.main.see_notes.*
 import android.widget.AdapterView
 import android.widget.Spinner
+import kotlinx.android.synthetic.main.add_note.*
 
 @RequiresApi(Build.VERSION_CODES.O)
 
@@ -53,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.add_note, R.id.see_notes, R.id.search_note), drawerLayout)
+                R.id.add_note, R.id.see_notes, R.id.search_note, R.id.edit_text_from_edit_note), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
@@ -92,9 +87,6 @@ class MainActivity : AppCompatActivity() {
 
     // show All notes in "Vezi notitele."
     fun showAllNotes(){
-        //TODO: Ca sa fac modificarile, pot sa creez alta pagina de .XML, sa creez un edit text, si
-        //TODO: si sa pun in acle EditText codul copiat.
-
         var notes = notesDBHelper.readAllNotes()
 
         var ll_entries: LinearLayout = findViewById(R.id.ll_entries)
@@ -126,16 +118,29 @@ class MainActivity : AppCompatActivity() {
             ll_entries.addView(tv_user)
             ll_entries.addView(button)
             ll_entries.addView(button_for_edit_text)
+
             button.setOnClickListener {
                 delete_note(button)
                 Toast.makeText(this, "Notita a fost stearsa.", Toast.LENGTH_SHORT).show()
                 ll_entries.removeAllViews()
                 showAllNotes()
             }
+            val mesaj: String = it.note_message.toString()
+            button_for_edit_text.setOnClickListener{
+                edit_note(mesaj, button.id)
+            }
         }
     }
 
-    // repetition (Search menu).
+    fun edit_note(noteMessage: String, id_item: Int) {
+        val intent = Intent(this, EditNoteActivity::class.java).apply {
+            putExtra("noteMessage",  noteMessage)
+            putExtra("id_item", id_item)
+        }
+        startActivity(intent)
+    }
+
+    // Search menu.
     fun show_on_activity(notes: ArrayList<NoteModel>){
         var ll_entries_search: LinearLayout = findViewById(R.id.ll_entries_search)
         ll_entries_search.removeAllViews()
@@ -148,7 +153,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // Search menu.
     fun search_note(){
         var edit_text_search_note: EditText = findViewById(R.id.edit_text_search_note)
         var spinner: Spinner = findViewById(R.id.spinner_option_search)
@@ -198,6 +202,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
